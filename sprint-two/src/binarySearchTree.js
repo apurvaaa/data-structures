@@ -25,11 +25,25 @@ var BSTmethods = {
       }
     }
   },
-  contains: function() {
-  
+  contains: function(value) {
+    if (this.value === value) {
+      return true;
+    } else if (this.value < value && this.right !== null) {
+      return this.right.contains(value);
+    } else if (this.value > value && this.left !== null) {
+      return this.left.contains(value);
+    } else {
+      return false;
+    }
   },
-  depthFirstLog: function() {
-  
+  depthFirstLog: function(cb) {
+    cb(this.value);
+    if (this.left !== null) {
+      this.left.depthFirstLog(cb);
+    } 
+    if (this.right !== null) {
+      this.right.depthFirstLog(cb);
+    }
   }
 };
 
