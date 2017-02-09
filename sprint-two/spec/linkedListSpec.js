@@ -51,5 +51,29 @@ describe('linkedList', function() {
     expect(linkedList.contains(4)).to.equal(false);
   });
 
+  it('should not contain a value which was removed from the middle of the linked list', function() {
+    linkedList.addToTail(4);
+    linkedList.addToTail(5);
+    linkedList.addToTail(6);
+    linkedList.removeNode(5);
+    expect(linkedList.contains(5)).to.equal(false);
+  });
+
+  it('should not contain a value which was removed from the head using remove node', function() {
+    linkedList.addToTail(4);
+    linkedList.addToTail(5);
+    linkedList.addToTail(6);
+    linkedList.removeNode(4);
+    expect(linkedList.contains(4)).to.equal(false);
+  });
+
+  it('should not contain a value which was removed from the tail using remove node', function() {
+    linkedList.addToTail(4);
+    linkedList.addToTail(5);
+    linkedList.addToTail(6);
+    linkedList.removeNode(6);
+    expect(linkedList.contains(6)).to.equal(false);
+  });
+
   // add more tests here to test the functionality of linkedList
 });
