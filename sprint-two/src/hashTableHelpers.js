@@ -12,7 +12,9 @@
 //   limitedArray.get(3); // returns 'hi'
 
 var LimitedArray = function(limit) {
+  var limit = limit;
   var storage = [];
+  var count = 0;
 
   var limitedArray = {};
   limitedArray.get = function(index) {
@@ -22,11 +24,33 @@ var LimitedArray = function(limit) {
   limitedArray.set = function(index, value) {
     checkLimit(index);
     storage[index] = value;
+    count++;
   };
   limitedArray.each = function(callback) {
     for (var i = 0; i < storage.length; i++) {
       callback(storage[i], i, storage);
     }
+  };
+  limitedArray.doubleLimit = function() {
+    limit *= 2;
+  };
+
+  limitedArray.isHalfFull = function() {
+    return (count === limit / 2);
+  };
+
+  limitedArray.reduceToHalf = function() {
+    
+  };
+
+  limitedArray.isFull = function() {
+    var emptySpaces = 0;
+    limitedArray.each(function(item) {
+      if (item === undefined) {
+        emptySpaces++;
+      }
+    });
+    return emptySpaces === 0;
   };
 
   var checkLimit = function(index) {
@@ -44,7 +68,7 @@ var LimitedArray = function(limit) {
 // This is a "hashing function". You don't need to worry about it, just use it
 // to turn any string into an integer that is well-distributed between the
 // numbers 0 and `max`
-var getIndexBelowMaxForKey = function(str, max) {
+var getHash = function(str, max) {
   var hash = 0;
   for (var i = 0; i < str.length; i++) {
     hash = (hash << 5) + hash + str.charCodeAt(i);
