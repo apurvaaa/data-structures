@@ -68,5 +68,12 @@ Graph.prototype.hasNode = function(node) {
 /*
  * Complexity: What is the time complexity of the above functions?
  */
-
+ /* n is the number of nodes in the list
+ addNode: O(1)
+ contains: O(n)
+ removeNode: O(n)
+ addEdge: O(1)
+ hasEdge: O(1)
+ removeEdge: O(1)
+ forEachNode: O(n) * complexity of callback function*/
 
