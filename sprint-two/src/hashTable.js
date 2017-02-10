@@ -9,8 +9,8 @@ var HashTable = function() {
 };
 
 HashTable.prototype.insert = function(k, v) {
-  if (this._storage.isFull()) {
-    this._storage.doubleLimit();
+  if (this._storage.isAlmostFull()) {
+    this._storage.increaseToDouble();
     this._limit *= 2;
   }
   var index = getHash(k, this._limit);
@@ -25,7 +25,7 @@ HashTable.prototype.retrieve = function(k) {
 HashTable.prototype.remove = function(k) {
   var index = getHash(k, this._limit);
   this._storage.set(index, k, undefined);
-  if (this._storage.isHalfFull()) {
+  if (this._storage.isAlmostEmpty()) {
     this._storage.reduceToHalf(this._keys);
     this._limit = Math.floor(this._limit / 2);
   }

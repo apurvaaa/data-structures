@@ -38,55 +38,59 @@ var LimitedArray = function(limit) {
       if (storage[index] !== undefined && storage[index][key] !== undefined) {
         delete storage[index][key];
         count--;
-      } else {
-        return;
-      }
+      } 
+      return;
     }
     // If nothing is at the index yet
     if (storage[index] === undefined) {
       storage[index] = {};
-      storage[index][key] = value;
-      count++;
-    } else {  // Else, 
-      storage[index][key] = value;
-    }
+      
+    }  
+    storage[index][key] = value;
+    count++;
+    
     
   };
+
   limitedArray.each = function(callback) {
     for (var i = 0; i < storage.length; i++) {
       callback(storage[i], i, storage);
     }
   };
-  limitedArray.doubleLimit = function() {
-    limit *= 2;
+  limitedArray.increaseToDouble = function() {
+    limitedArray.rehash(limit * 2);
   };
 
-  limitedArray.isHalfFull = function() {
-    return (count === Math.floor(limit / 2));
-  };
 
-  limitedArray.reduceToHalf = function(keys) {
+  limitedArray.rehash = function(newLimit) {
     var newStorage = [];
-    var newLimit = Math.floor(limit / 2);
     // for every index 
     for (var i = 0; i < storage.length; i++) {
       if (storage[i] !== undefined) {
         for (var key in storage[i]) {
           var originalValue = storage[i][key];
           var index = getHash(key, newLimit);
-          if (newStorage[i] === undefined) {
+          if (newStorage[index] === undefined) {
             newStorage[index] = {};
           }
           newStorage[index][key] = originalValue;
         }
       }
     }
-    limit = Math.floor(limit / 2);
+    limit = newLimit;
     storage = newStorage;
   };
 
-  limitedArray.isFull = function() {
-    return limit === count;
+  limitedArray.isAlmostEmpty = function() {
+    return (count < Math.floor(limit * 0.25));
+  };
+
+  limitedArray.reduceToHalf = function() {
+    limitedArray.rehash(Math.floor(limit / 2));
+  };
+
+  limitedArray.isAlmostFull = function() {
+    return count >= (0.75 * limit);
   };
 
   var checkLimit = function(index) {
