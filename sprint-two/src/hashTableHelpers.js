@@ -25,8 +25,8 @@ var LimitedArray = function(limit) {
     if (storage[index] === undefined) {
       return undefined;
     } else {
-      if (storage[index][key] !== undefined) {
-        return storage[index][key];
+      if (storage[index].contains(key)) {
+        return storage[index].retrieveValue(key);
       } else {
         return undefined;
       }
@@ -34,22 +34,21 @@ var LimitedArray = function(limit) {
   };
   limitedArray.set = function(index, key, value) {
     checkLimit(index);
+    // Remove node
     if (value === undefined) {
-      if (storage[index] !== undefined && storage[index][key] !== undefined) {
-        delete storage[index][key];
+      if (storage[index] !== undefined && storage[index].contains(key)) {
+        storage[index].remove(key);
         count--;
-      } 
+      }
       return;
     }
+    // Add new node
     // If nothing is at the index yet
     if (storage[index] === undefined) {
-      storage[index] = {};
-      
+      storage[index] = new hashTableLinkedList();      
     }  
-    storage[index][key] = value;
+    storage[index].insert(key, value);
     count++;
-    
-    
   };
 
   limitedArray.each = function(callback) {
@@ -60,7 +59,6 @@ var LimitedArray = function(limit) {
   limitedArray.increaseToDouble = function() {
     limitedArray.rehash(limit * 2);
   };
-
 
   limitedArray.rehash = function(newLimit) {
     var newStorage = [];
