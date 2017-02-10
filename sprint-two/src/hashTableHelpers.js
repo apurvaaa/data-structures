@@ -39,8 +39,15 @@ var LimitedArray = function(limit) {
     return (count === limit / 2);
   };
 
-  limitedArray.reduceToHalf = function() {
-    
+  limitedArray.reduceToHalf = function(keys) {
+    var newStorage = [];
+    keys.forEvery(function(k) {
+      var newHashKey = getHash(k, limit / 2);
+      var oldHashKey = getHash(k, limit);
+      newStorage[newHashKey] = storage[oldHashKey]; 
+    });
+    limit /= 2;
+    storage = newStorage;
   };
 
   limitedArray.isFull = function() {

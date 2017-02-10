@@ -49,6 +49,14 @@ var LinkedList = function() {
 
   };
 
+  list.forEvery = function(cb) {
+    var node = this.head;
+    while (node !== null) {
+      cb(node.value);
+      node = node.next;
+    }
+  };
+
   return list;
 };
 

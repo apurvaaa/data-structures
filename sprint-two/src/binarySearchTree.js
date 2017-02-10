@@ -50,3 +50,7 @@ var BSTmethods = {
 /*
  * Complexity: What is the time complexity of the above functions?
  */
+
+/*insert: O(log n)  if unbalanced, then O(n)
+contains: O(log n)  if unbalanced, then O(n)
+depthFirstLog: O(n * complexity of cb)*/

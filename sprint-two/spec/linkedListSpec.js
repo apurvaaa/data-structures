@@ -51,6 +51,7 @@ describe('linkedList', function() {
     expect(linkedList.contains(4)).to.equal(false);
   });
 
+  // add more tests here to test the functionality of linkedList
   it('should not contain a value which was removed from the middle of the linked list', function() {
     linkedList.addToTail(4);
     linkedList.addToTail(5);
@@ -75,5 +76,16 @@ describe('linkedList', function() {
     expect(linkedList.contains(6)).to.equal(false);
   });
 
-  // add more tests here to test the functionality of linkedList
+  it('should run callback function on each node in the linked list', function() {
+    linkedList.addToTail(4);
+    linkedList.addToTail(5);
+    linkedList.addToTail(6);
+    var array = [];
+    linkedList.forEvery(function(value) {
+      array.push(value);
+    });
+    expect(array).to.eql([4, 5, 6]);
+  });
+
+  
 });
