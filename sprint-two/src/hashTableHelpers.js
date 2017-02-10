@@ -62,8 +62,23 @@ var LimitedArray = function(limit) {
 
   limitedArray.rehash = function(newLimit) {
     var newStorage = [];
-    // for every index 
     for (var i = 0; i < storage.length; i++) {
+      if (storage[i] !== undefined) {
+        storage[i].forEvery(function(key, value) {
+          //get the new index
+          var newIndex = getHash(key, newLimit);
+          
+          //insert to hew storage at new index
+          if (newStorage[newIndex] === undefined) {
+            newStorage[newIndex] = new hashTableLinkedList();
+          } 
+          newStorage[newIndex].insert(key, value);
+        });
+      }
+    }
+
+    // for every index 
+    /*for (var i = 0; i < storage.length; i++) {
       if (storage[i] !== undefined) {
         for (var key in storage[i]) {
           var originalValue = storage[i][key];
@@ -74,7 +89,7 @@ var LimitedArray = function(limit) {
           newStorage[index][key] = originalValue;
         }
       }
-    }
+    }*/
     limit = newLimit;
     storage = newStorage;
   };

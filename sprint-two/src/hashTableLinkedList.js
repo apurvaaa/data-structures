@@ -42,7 +42,13 @@ var hashTableLinkedList = function() {
     }
   };
 
-  
+  list.forEvery = function(cb) {
+    var node = this.head;
+    while (node !== null) {
+      cb(node.key, node.value);
+      node = node.next;
+    }
+  };
 
   list.retrieveValue = function(key) {
     var node = list.head;
