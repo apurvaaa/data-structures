@@ -25,10 +25,9 @@ HashTable.prototype.retrieve = function(k) {
 HashTable.prototype.remove = function(k) {
   var index = getHash(k, this._limit);
   this._storage.set(index, k, undefined);
-  this._keys.removeNode(k);
   if (this._storage.isHalfFull()) {
     this._storage.reduceToHalf(this._keys);
-    this._limit /= 2;
+    this._limit = Math.floor(this._limit / 2);
   }
 };
 

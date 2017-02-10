@@ -23,19 +23,25 @@ var LimitedArray = function(limit) {
     checkLimit(index);
     
     if (storage[index] === undefined) {
-      return null;
+      return undefined;
     } else {
       if (storage[index][key] !== undefined) {
         return storage[index][key];
       } else {
-        return null;
+        return undefined;
       }
     }
-    
-    return null;
   };
   limitedArray.set = function(index, key, value) {
     checkLimit(index);
+    if (value === undefined) {
+      if (storage[index] !== undefined && storage[index][key] !== undefined) {
+        delete storage[index][key];
+        count--;
+      } else {
+        return;
+      }
+    }
     // If nothing is at the index yet
     if (storage[index] === undefined) {
       storage[index] = {};
@@ -56,28 +62,31 @@ var LimitedArray = function(limit) {
   };
 
   limitedArray.isHalfFull = function() {
-    return (count === limit / 2);
+    return (count === Math.floor(limit / 2));
   };
 
   limitedArray.reduceToHalf = function(keys) {
     var newStorage = [];
-    keys.forEvery(function(k) {
-      var newHashKey = getHash(k, limit / 2);
-      var oldHashKey = getHash(k, limit);
-      newStorage[newHashKey] = storage[oldHashKey]; 
-    });
-    limit /= 2;
+    var newLimit = Math.floor(limit / 2);
+    // for every index 
+    for (var i = 0; i < storage.length; i++) {
+      if (storage[i] !== undefined) {
+        for (var key in storage[i]) {
+          var originalValue = storage[i][key];
+          var index = getHash(key, newLimit);
+          if (newStorage[i] === undefined) {
+            newStorage[index] = {};
+          }
+          newStorage[index][key] = originalValue;
+        }
+      }
+    }
+    limit = Math.floor(limit / 2);
     storage = newStorage;
   };
 
   limitedArray.isFull = function() {
-    var emptySpaces = 0;
-    limitedArray.each(function(item) {
-      if (item === undefined) {
-        emptySpaces++;
-      }
-    });
-    return emptySpaces === 0;
+    return limit === count;
   };
 
   var checkLimit = function(index) {
