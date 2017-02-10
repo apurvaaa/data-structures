@@ -44,6 +44,66 @@ var BSTmethods = {
     if (this.right !== null) {
       this.right.depthFirstLog(cb);
     }
+  },
+  remove: function(value) {
+    var currentNode = this;
+    var previousNode = null;
+
+    
+    // Finding the node with the value
+    while (currentNode.value !== value) { // We want to remove this node
+      if (currentNode.value < value ) {
+        if (currentNode.left === null) {
+          return;
+        } else {
+          previousNode = currentNode;
+          currentNode = currentNode.right;
+        }
+      } else if (currentNode.value > value) {
+        if (currentNode.left === null) {
+          return;  
+        }
+        previousNode = currentNode;
+        currentNode = currentNode.left;
+      } 
+    }
+    // Case with no children
+    if (currentNode.left === null && currentNode.right === null) {
+      if (previousNode.value > currentNode.value) {
+        previousNode.left = null;
+      } else {
+        previousNode.right = null;
+      }
+      return;
+    }
+
+    // Case with one child
+    if (currentNode.left === null && currentNode.right !== null) {
+      if (previousNode.value > currentNode.value) {
+        previousNode.left = currentNode.right;
+      } else {
+        previousNode.right = currentNode.right;
+      }
+    } else if (currentNode.left !== null && currentNode.right === null) {
+      if (previousNode.value > currentNode.value) {
+        previousNode.left = currentNode.left;
+      } else {
+        previousNode.right = currentNode.left;
+      }
+      return;
+    }
+
+    // Case where node has two children
+    var minimalValue = currentNode.right.findMinimalValueInTree();
+    currentNode.value = minimalValue;
+    currentNode.right.remove(value);  // Removes minimal value in right subtree
+  },
+  findMinimalValueInTree: function() {
+    if (this.left !== null) {
+      return this.left.findMinimalValueInTree();
+    } else {
+      return this.value;
+    }
   }
 };
 
@@ -53,4 +113,7 @@ var BSTmethods = {
 
 /*insert: O(log n)  if unbalanced, then O(n)
 contains: O(log n)  if unbalanced, then O(n)
-depthFirstLog: O(n * complexity of cb)*/
+depthFirstLog: O(n * complexity of cb)
+remove: O(lg n)
+findMinimalValue: O(lg n) where n is the number of nodes in the subtree
+*/

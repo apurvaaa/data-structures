@@ -9,12 +9,12 @@ var HashTable = function() {
 };
 
 HashTable.prototype.insert = function(k, v) {
-  if (this._storage.isAlmostFull()) {
-    this._storage.increaseToDouble();
+  if (this._storage.isAlmostFull()) { 
+    this._storage.increaseToDouble(); //O(n)
     this._limit *= 2;
   }
-  var index = getHash(k, this._limit);
-  this._storage.set(index, k, v);
+  var index = getHash(k, this._limit); //O(L)
+  this._storage.set(index, k, v);         // O(1) - O(n)
 };
 
 HashTable.prototype.retrieve = function(k) {
@@ -23,10 +23,10 @@ HashTable.prototype.retrieve = function(k) {
 };
 
 HashTable.prototype.remove = function(k) {
-  var index = getHash(k, this._limit);
-  this._storage.set(index, k, undefined);
-  if (this._storage.isAlmostEmpty()) {
-    this._storage.reduceToHalf(this._keys);
+  var index = getHash(k, this._limit);     //O(L)
+  this._storage.set(index, k, undefined);  //O(n) - O(1)
+  if (this._storage.isAlmostEmpty()) {     
+    this._storage.reduceToHalf(this._keys);  // O(n)
     this._limit = Math.floor(this._limit / 2);
   }
 };
@@ -38,6 +38,15 @@ HashTable.prototype.remove = function(k) {
  */
 
 /*L = length of string
-insert: O(L)
-retrieve: O(L)
-remove: O(L)*/
+insert: 
+worst: O(L) + O(n)
+best: O(L) +O(1)
+
+retrieve: 
+worst: O(L) + O(n)
+best: O(L) + O(1)
+
+remove: 
+worst: O(L) + O(n)
+best: O(L) + O(1)
+*/

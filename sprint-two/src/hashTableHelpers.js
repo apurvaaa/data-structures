@@ -77,19 +77,6 @@ var LimitedArray = function(limit) {
       }
     }
 
-    // for every index 
-    /*for (var i = 0; i < storage.length; i++) {
-      if (storage[i] !== undefined) {
-        for (var key in storage[i]) {
-          var originalValue = storage[i][key];
-          var index = getHash(key, newLimit);
-          if (newStorage[index] === undefined) {
-            newStorage[index] = {};
-          }
-          newStorage[index][key] = originalValue;
-        }
-      }
-    }*/
     limit = newLimit;
     storage = newStorage;
   };

@@ -5,10 +5,11 @@ describe('binarySearchTree', function() {
     binarySearchTree = BinarySearchTree(5);
   });
 
-  it('should have methods named "insert", "contains", and "depthFirstLog', function() {
+  it('should have methods named "insert", "contains", "remove", and "depthFirstLog', function() {
     expect(binarySearchTree.insert).to.be.a('function');
     expect(binarySearchTree.contains).to.be.a('function');
     expect(binarySearchTree.depthFirstLog).to.be.a('function');
+    expect(binarySearchTree.remove).to.be.a('function');
   });
 
   it('should insert values at the correct location in the tree', function() {
@@ -35,5 +36,38 @@ describe('binarySearchTree', function() {
     binarySearchTree.insert(3);
     binarySearchTree.depthFirstLog(func);
     expect(array).to.eql([5, 2, 3]);
+  });
+
+  // Added tests
+  it('should remove a node with no children using `remove`', function() {
+    binarySearchTree.insert(2);
+    binarySearchTree.insert(3);
+    binarySearchTree.insert(7);
+    binarySearchTree.remove(7);
+    expect(binarySearchTree.contains(7)).to.equal(false);
+  });
+
+  it('should remove the head node using `remove`', function() {
+    binarySearchTree.insert(2);
+    binarySearchTree.insert(3);
+    binarySearchTree.insert(7);
+    binarySearchTree.remove(5);
+    expect(binarySearchTree.contains(5)).to.equal(false);
+  });
+
+  it('should remove a node with 1 child using `remove`', function() {
+    binarySearchTree.insert(2);
+    binarySearchTree.insert(3);
+    binarySearchTree.insert(7);
+    binarySearchTree.remove(2);
+    expect(binarySearchTree.contains(2)).to.equal(false);
+  });
+
+  it('should remove a node with 2 children using `remove`', function() {
+    binarySearchTree.insert(2);
+    binarySearchTree.insert(3);
+    binarySearchTree.insert(7);
+    binarySearchTree.remove(5);
+    expect(binarySearchTree.contains(5)).to.equal(false);
   });
 });
