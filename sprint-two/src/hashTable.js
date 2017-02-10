@@ -6,7 +6,6 @@
 var HashTable = function() {
   this._limit = 8;
   this._storage = LimitedArray(this._limit);
-  this._keys = LinkedList();
 };
 
 HashTable.prototype.insert = function(k, v) {
@@ -14,19 +13,18 @@ HashTable.prototype.insert = function(k, v) {
     this._storage.doubleLimit();
     this._limit *= 2;
   }
-  this._keys.addToTail(k);
   var index = getHash(k, this._limit);
-  this._storage.set(index, v);
+  this._storage.set(index, k, v);
 };
 
 HashTable.prototype.retrieve = function(k) {
   var index = getHash(k, this._limit);
-  return this._storage.get(index);
+  return this._storage.get(index, k);
 };
 
 HashTable.prototype.remove = function(k) {
   var index = getHash(k, this._limit);
-  this._storage.set(index, undefined);
+  this._storage.set(index, k, undefined);
   this._keys.removeNode(k);
   if (this._storage.isHalfFull()) {
     this._storage.reduceToHalf(this._keys);

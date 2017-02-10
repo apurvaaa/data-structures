@@ -12,19 +12,39 @@
 //   limitedArray.get(3); // returns 'hi'
 
 var LimitedArray = function(limit) {
+  
   var limit = limit;
   var storage = [];
   var count = 0;
 
   var limitedArray = {};
-  limitedArray.get = function(index) {
+
+  limitedArray.get = function(index, key) {
     checkLimit(index);
-    return storage[index];
+    
+    if (storage[index] === undefined) {
+      return null;
+    } else {
+      if (storage[index][key] !== undefined) {
+        return storage[index][key];
+      } else {
+        return null;
+      }
+    }
+    
+    return null;
   };
-  limitedArray.set = function(index, value) {
+  limitedArray.set = function(index, key, value) {
     checkLimit(index);
-    storage[index] = value;
-    count++;
+    // If nothing is at the index yet
+    if (storage[index] === undefined) {
+      storage[index] = {};
+      storage[index][key] = value;
+      count++;
+    } else {  // Else, 
+      storage[index][key] = value;
+    }
+    
   };
   limitedArray.each = function(callback) {
     for (var i = 0; i < storage.length; i++) {
