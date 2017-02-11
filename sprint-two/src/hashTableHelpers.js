@@ -13,20 +13,20 @@
 
 var LimitedArray = function(limit) {
   
-  var limit = limit;
-  var storage = [];
-  var count = 0;
+  var _limit = limit;
+  var _storage = [];
+  var _count = 0;
 
   var limitedArray = {};
 
   limitedArray.get = function(index, key) {
     _checkLimit(index);
     
-    if (storage[index] === undefined) {
+    if (_storage[index] === undefined) {
       return undefined;
     } else {
-      if (storage[index].contains(key)) {
-        return storage[index].retrieveValue(key);
+      if (_storage[index].contains(key)) {
+        return _storage[index].retrieveValue(key);
       } else {
         return undefined;
       }
@@ -36,24 +36,24 @@ var LimitedArray = function(limit) {
     _checkLimit(index);
     // Remove node
     if (value === undefined) {
-      if (storage[index] !== undefined && storage[index].contains(key)) {
-        storage[index].remove(key);
-        count--;
+      if (_storage[index] !== undefined && _storage[index].contains(key)) {
+        _storage[index].remove(key);
+        _count--;
       }
       return;
     }
     // Add new node
     // If nothing is at the index yet
-    if (storage[index] === undefined) {
-      storage[index] = new hashTableLinkedList();      
+    if (_storage[index] === undefined) {
+      _storage[index] = new hashTableLinkedList();      
     }  
-    storage[index].insert(key, value);
-    count++;
+    _storage[index].insert(key, value);
+    _count++;
   };
 
   limitedArray.each = function(callback) {
-    for (var i = 0; i < storage.length; i++) {
-      callback(storage[i], i, storage);
+    for (var i = 0; i < _storage.length; i++) {
+      callback(_storage[i], i, _storage);
     }
   };
   limitedArray.increaseToDouble = function() {
@@ -62,13 +62,13 @@ var LimitedArray = function(limit) {
 
   limitedArray._rehash = function(newLimit) {
     var newStorage = [];
-    for (var i = 0; i < storage.length; i++) {
-      if (storage[i] !== undefined) {
-        storage[i].forEvery(function(key, value) {
+    for (var i = 0; i < _storage.length; i++) {
+      if (_storage[i] !== undefined) {
+        _storage[i].forEvery(function(key, value) {
           //get the new index
           var newIndex = getHash(key, newLimit);
           
-          //insert to hew storage at new index
+          //insert to hew _storage at new index
           if (newStorage[newIndex] === undefined) {
             newStorage[newIndex] = new hashTableLinkedList();
           } 
@@ -77,27 +77,27 @@ var LimitedArray = function(limit) {
       }
     }
 
-    limit = newLimit;
-    storage = newStorage;
+    _limit = newLimit;
+    _storage = newStorage;
   };
 
   limitedArray.isAlmostEmpty = function() {
-    return (count < Math.floor(limit * 0.25));
+    return (_count < Math.floor(_limit * 0.25));
   };
 
   limitedArray.reduceToHalf = function() {
-    limitedArray._rehash(Math.floor(limit / 2));
+    limitedArray._rehash(Math.floor(_limit / 2));
   };
 
   limitedArray.isAlmostFull = function() {
-    return count >= (0.75 * limit);
+    return _count >= (0.75 * _limit);
   };
 
   var _checkLimit = function(index) {
     if (typeof index !== 'number') {
       throw new Error('setter requires a numeric index for its first argument');
     }
-    if (limit <= index) {
+    if (_limit <= index) {
       throw new Error('Error trying to access an over-the-limit index');
     }
   };

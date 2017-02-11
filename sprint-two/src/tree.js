@@ -1,10 +1,10 @@
 var Tree = function(value) {
   var newTree = {};
   _.extend(newTree, treeMethods);
-  newTree.value = value;
+  newTree._value = value;
 
   // your code here
-  newTree.children = [];
+  newTree._children = [];
 
   return newTree;
 };
@@ -12,15 +12,15 @@ var Tree = function(value) {
 var treeMethods = {};
 
 treeMethods.addChild = function(value) {
-  this.children.push(new Tree(value));
+  this._children.push(new Tree(value));
 };
 
 treeMethods.contains = function(target) {
-  if (this.value === target) {
+  if (this._value === target) {
     return true;
   } else {
-    for (var i = 0; i < this.children.length; i++) {
-      if (this.children[i].contains(target)) {
+    for (var i = 0; i < this._children.length; i++) {
+      if (this._children[i].contains(target)) {
         return true;
       }
     }
@@ -31,19 +31,19 @@ treeMethods.contains = function(target) {
 treeMethods.excommunicate = function(value) {
   var excommunicated = false;
   var newChildren = [];
-  for (var i = 0; i < this.children.length; i++) {
-    if (this.children[i].value !== value) {
-      newChildren.push(this.children[i]);
+  for (var i = 0; i < this._children.length; i++) {
+    if (this._children[i]._value !== value) {
+      newChildren.push(this._children[i]);
     } else {
       excommunicated = true;
     }
   }
 
   if (excommunicated) {
-    this.children = newChildren;
+    this._children = newChildren;
   } else {
-    for (var i = 0; i < this.children.length; i++) {
-      this.children[i].excommunicate(value);
+    for (var i = 0; i < this._children.length; i++) {
+      this._children[i].excommunicate(value);
     }
   }
 };

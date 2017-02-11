@@ -1,16 +1,16 @@
-var BloomFilter = function(m, k) {
+var BloomFilter = function(_m, _k) {
   
-  // m = 18, k = 3
-  this.bitVector = _.range(0, m).map(function(item) { return 0; });
-  this.m = m;  // max = 18
-  this.k = k;  // k = 3 
-  this.seed = 7919;
-  this.hashFunctions = [this._hash1.bind(this), this._hash2.bind(this), this._hash3.bind(this)];
+  // _m = 18, _k = 3
+  this._bitVector = _.range(0, _m).map(function(item) { return 0; });
+  this._m = _m;  // max = 18
+  this._k = _k;  // _k = 3 
+  this._seed = 7919;
+  this._hashFunctions = [this._hash1.bind(this), this._hash2.bind(this), this._hash3.bind(this)];
   var bv = this;
-  if (k > 3) {
-    for (i = 3; i < k; i++) {
-      //hashi(x, m) = (hasha(x) + i × hashb(x)) mod m
-      this.hashFunctions.push(this.newHashFunction(i).bind(this));
+  if (_k > 3) {
+    for (i = 3; i < _k; i++) {
+      //hashi(x, _m) = (hasha(x) + i × hashb(x)) mod _m
+      this._hashFunctions.push(this.newHashFunction(i).bind(this));
     }
   }
 
@@ -19,7 +19,7 @@ var BloomFilter = function(m, k) {
 
 BloomFilter.prototype.newHashFunction = function(i) {
   return function(str) {
-    return (this.hashFunctions[0](str) + i * this.hashFunctions[1](str, this.seed)) % this.m;
+    return (this._hashFunctions[0](str) + i * this._hashFunctions[1](str, this._seed)) % this._m;
   };
 };
 
@@ -35,8 +35,8 @@ BloomFilter.prototype.check = function(str) {
 
 BloomFilter.prototype._getIndices = function(str) {
   var indices = [];
-  for (i = 0; i < this.k; i++) {
-    indices.push(this.hashFunctions[i](str, this.seed));
+  for (i = 0; i < this._k; i++) {
+    indices.push(this._hashFunctions[i](str, this._seed));
 
   }
   return indices;
@@ -44,13 +44,13 @@ BloomFilter.prototype._getIndices = function(str) {
 
 BloomFilter.prototype._setBitsOn = function(indices) {
   for (var i = 0; i < indices.length; i++) {
-    this.bitVector[indices[i]] = 1;
+    this._bitVector[indices[i]] = 1;
   }
 };
 
 BloomFilter.prototype._checkBits = function(indices) {
   for (var i = 0; i < indices.length; i++) {
-    if (this.bitVector[indices[i]] === 0) {
+    if (this._bitVector[indices[i]] === 0) {
       return false;
     }
   }
@@ -65,29 +65,29 @@ BloomFilter.prototype._hash1 = function(str) {
     hash = hash & hash; // Convert to 32bit integer
     hash = Math.abs(hash);
   }
-  return hash % this.m;
+  return hash % this._m;
 };
 
 
-BloomFilter.prototype._hash2 = function(str, seed) {
+BloomFilter.prototype._hash2 = function(str, _seed) {
 
   var l = str.length;
-  var h = seed ^ l;
+  var h = _seed ^ l;
   var i = 0;
-  var k;
+  var _k;
   
   while (l >= 4) {
-    k = 
+    _k = 
       ((str.charCodeAt(i) & 0xff)) |
       ((str.charCodeAt(++i) & 0xff) << 8) |
       ((str.charCodeAt(++i) & 0xff) << 16) |
       ((str.charCodeAt(++i) & 0xff) << 24);
     
-    k = (((k & 0xffff) * 0x5bd1e995) + ((((k >>> 16) * 0x5bd1e995) & 0xffff) << 16));
-    k ^= k >>> 24;
-    k = (((k & 0xffff) * 0x5bd1e995) + ((((k >>> 16) * 0x5bd1e995) & 0xffff) << 16));
+    _k = (((_k & 0xffff) * 0x5bd1e995) + ((((_k >>> 16) * 0x5bd1e995) & 0xffff) << 16));
+    _k ^= _k >>> 24;
+    _k = (((_k & 0xffff) * 0x5bd1e995) + ((((_k >>> 16) * 0x5bd1e995) & 0xffff) << 16));
 
-    h = (((h & 0xffff) * 0x5bd1e995) + ((((h >>> 16) * 0x5bd1e995) & 0xffff) << 16)) ^ k;
+    h = (((h & 0xffff) * 0x5bd1e995) + ((((h >>> 16) * 0x5bd1e995) & 0xffff) << 16)) ^ _k;
 
     l -= 4;
     ++i;
@@ -104,17 +104,17 @@ BloomFilter.prototype._hash2 = function(str, seed) {
   h = (((h & 0xffff) * 0x5bd1e995) + ((((h >>> 16) * 0x5bd1e995) & 0xffff) << 16));
   h ^= h >>> 15;
 
-  return (h >>> 0) % this.m;
+  return (h >>> 0) % this._m;
 
 };
 
-BloomFilter.prototype._hash3 = function(key, seed) {
+BloomFilter.prototype._hash3 = function(key, _seed) {
 
   var remainder, bytes, h1, h1b, c1, c1b, c2, c2b, k1, i;
   
   remainder = key.length & 3; // key.length % 4
   bytes = key.length - remainder;
-  h1 = seed;
+  h1 = _seed;
   c1 = 0xcc9e2d51;
   c2 = 0x1b873593;
   i = 0;
@@ -158,6 +158,6 @@ BloomFilter.prototype._hash3 = function(key, seed) {
   h1 = ((((h1 & 0xffff) * 0xc2b2ae35) + ((((h1 >>> 16) * 0xc2b2ae35) & 0xffff) << 16))) & 0xffffffff;
   h1 ^= h1 >>> 16;
 
-  return (h1 >>> 0) % this.m;
+  return (h1 >>> 0) % this._m;
 };
 

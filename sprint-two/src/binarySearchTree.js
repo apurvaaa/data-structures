@@ -1,48 +1,48 @@
 var BinarySearchTree = function(value) {
   var BST = Object.create(BSTmethods);
-  BST.value = value;
-  BST.left = null;
-  BST.right = null;
+  BST._value = value;
+  BST._left = null;
+  BST._right = null;
   return BST;
 };
 
 var BSTmethods = {
   insert: function(value) {
     var node;
-    if (value < this.value) {
-      if (this.left === null) {
+    if (value < this._value) {
+      if (this._left === null) {
         node = BinarySearchTree(value);
-        this.left = node;
+        this._left = node;
       } else {
-        this.left.insert(value);
+        this._left.insert(value);
       }
     } else {
-      if (this.right === null) {
+      if (this._right === null) {
         node = BinarySearchTree(value);
-        this.right = node;
+        this._right = node;
       } else {
-        this.right.insert(value);
+        this._right.insert(value);
       }
     }
   },
   contains: function(value) {
-    if (this.value === value) {
+    if (this._value === value) {
       return true;
-    } else if (this.value < value && this.right !== null) {
-      return this.right.contains(value);
-    } else if (this.value > value && this.left !== null) {
-      return this.left.contains(value);
+    } else if (this._value < value && this._right !== null) {
+      return this._right.contains(value);
+    } else if (this._value > value && this._left !== null) {
+      return this._left.contains(value);
     } else {
       return false;
     }
   },
   depthFirstLog: function(cb) {
-    cb(this.value);
-    if (this.left !== null) {
-      this.left.depthFirstLog(cb);
+    cb(this._value);
+    if (this._left !== null) {
+      this._left.depthFirstLog(cb);
     } 
-    if (this.right !== null) {
-      this.right.depthFirstLog(cb);
+    if (this._right !== null) {
+      this._right.depthFirstLog(cb);
     }
   },
   remove: function(value) {
@@ -50,59 +50,59 @@ var BSTmethods = {
     var previousNode = null;
 
     
-    // Finding the node with the value
-    while (currentNode.value !== value) { // We want to remove this node
-      if (currentNode.value < value ) {
-        if (currentNode.left === null) {
+    // Finding the node with the _value
+    while (currentNode._value !== value) { // We want to remove this node
+      if (currentNode._value < value ) {
+        if (currentNode._left === null) {
           return;
         } else {
           previousNode = currentNode;
-          currentNode = currentNode.right;
+          currentNode = currentNode._right;
         }
-      } else if (currentNode.value > value) {
-        if (currentNode.left === null) {
+      } else if (currentNode._value > value) {
+        if (currentNode._left === null) {
           return;  
         }
         previousNode = currentNode;
-        currentNode = currentNode.left;
+        currentNode = currentNode._left;
       } 
     }
     // Case with no children
-    if (currentNode.left === null && currentNode.right === null) {
-      if (previousNode.value > currentNode.value) {
-        previousNode.left = null;
+    if (currentNode._left === null && currentNode._right === null) {
+      if (previousNode._value > currentNode._value) {
+        previousNode._left = null;
       } else {
-        previousNode.right = null;
+        previousNode._right = null;
       }
       return;
     }
 
     // Case with one child
-    if (currentNode.left === null && currentNode.right !== null) {
-      if (previousNode.value > currentNode.value) {
-        previousNode.left = currentNode.right;
+    if (currentNode._left === null && currentNode._right !== null) {
+      if (previousNode._value > currentNode._value) {
+        previousNode._left = currentNode._right;
       } else {
-        previousNode.right = currentNode.right;
+        previousNode._right = currentNode._right;
       }
-    } else if (currentNode.left !== null && currentNode.right === null) {
-      if (previousNode.value > currentNode.value) {
-        previousNode.left = currentNode.left;
+    } else if (currentNode._left !== null && currentNode._right === null) {
+      if (previousNode._value > currentNode._value) {
+        previousNode._left = currentNode._left;
       } else {
-        previousNode.right = currentNode.left;
+        previousNode._right = currentNode._left;
       }
       return;
     }
 
     // Case where node has two children
-    var minimalValue = currentNode.right._findMinimalValueInTree();
-    currentNode.value = minimalValue;
-    currentNode.right.remove(value);  // Removes minimal value in right subtree
+    var minimalValue = currentNode._right._findMinimalValueInTree();
+    currentNode._value = minimalValue;
+    currentNode._right.remove(value);  // Removes minimal _value in _right subtree
   },
   _findMinimalValueInTree: function() {
-    if (this.left !== null) {
-      return this.left._findMinimalValueInTree();
+    if (this._left !== null) {
+      return this._left._findMinimalValueInTree();
     } else {
-      return this.value;
+      return this._value;
     }
   }
 };

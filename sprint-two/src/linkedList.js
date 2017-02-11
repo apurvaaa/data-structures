@@ -1,29 +1,29 @@
 var LinkedList = function() {
   var list = {};
-  list.head = null;
-  list.tail = null;
+  list._head = null;
+  list._tail = null;
 
   list.addToTail = function(value) {
     var node = new Node(value);
-    if (list.tail) {
-      list.tail.next = node;
-      list.tail = list.tail.next;
+    if (list._tail) {
+      list._tail.next = node;
+      list._tail = list._tail.next;
     } else {
-      list.tail = node;
-      list.head = node;
+      list._tail = node;
+      list._head = node;
     }
   };
 
   list.removeHead = function() {
-    var result = list.head;
-    if (list.head !== null) {
-      list.head = list.head.next;
+    var result = list._head;
+    if (list._head !== null) {
+      list._head = list._head.next;
     }
     return result.value;
   };
 
   list.contains = function(target) {
-    var node = list.head;
+    var node = list._head;
     while (node !== null && target !== node.value) {
       node = node.next;
     }
@@ -35,13 +35,13 @@ var LinkedList = function() {
   };
 
   list.removeNode = function(value) {
-    var current = this.head;
+    var current = this._head;
     var previous = null;
     while (current !== null && value !== current.value) {
       previous = current;
       current = current.next;
     }
-    if (current === this.head) {
+    if (current === this._head) {
       this.removeHead();
     } else if (current !== null) {
       previous.next = current.next;
@@ -50,7 +50,7 @@ var LinkedList = function() {
   };
 
   list.forEvery = function(cb) {
-    var node = this.head;
+    var node = this._head;
     while (node !== null) {
       cb(node.value);
       node = node.next;

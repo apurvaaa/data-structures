@@ -1,13 +1,13 @@
 var hashTableLinkedList = function() {
   var list = {};
-  list.head = null;
-  list.tail = null;
+  list._head = null;
+  list._tail = null;
 
   list.insert = function(key, value) {
     
     // Check if key already is in linked list
     // If it is, replace the value
-    var current = this.head;
+    var current = this._head;
     var previous = null;
     while (current !== null && key !== current.key) {
       previous = current;
@@ -17,12 +17,12 @@ var hashTableLinkedList = function() {
     if (current === null) { // Key was not found
       // Add node at tail of linked list
       var node = new hashNode(key, value);
-      if (list.tail) {
-        list.tail.next = node;
-        list.tail = list.tail.next;
+      if (list._tail) {
+        list._tail.next = node;
+        list._tail = list._tail.next;
       } else {
-        list.tail = node;
-        list.head = node;
+        list._tail = node;
+        list._head = node;
       }
     } else if (current !== null) {  // key was found
       current.value = value;
@@ -31,7 +31,7 @@ var hashTableLinkedList = function() {
   };
 
   list.contains = function(key) {
-    var node = list.head;
+    var node = list._head;
     while (node !== null && (key !== node.key)) {
       node = node.next;
     }
@@ -43,7 +43,7 @@ var hashTableLinkedList = function() {
   };
 
   list.forEvery = function(cb) {
-    var node = this.head;
+    var node = this._head;
     while (node !== null) {
       cb(node.key, node.value);
       node = node.next;
@@ -51,7 +51,7 @@ var hashTableLinkedList = function() {
   };
 
   list.retrieveValue = function(key) {
-    var node = list.head;
+    var node = list._head;
     while (node !== null && (key !== node.key)) {
       node = node.next;
     }
@@ -63,14 +63,14 @@ var hashTableLinkedList = function() {
   };
 
   list.remove = function(key) {
-    var current = this.head;
+    var current = this._head;
     var previous = null;
     while (current !== null && key !== current.key) {
       previous = current;
       current = current.next;
     }
-    if (current === this.head) {
-      this.head = this.head.next;
+    if (current === this._head) {
+      this._head = this._head.next;
     } else if (current !== null) {
       previous.next = current.next;
     }
