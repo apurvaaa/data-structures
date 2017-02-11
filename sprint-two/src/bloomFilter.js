@@ -23,10 +23,6 @@ BloomFilter.prototype.newHashFunction = function(i) {
   };
 };
 
-BloomFilter.prototype.logBitVector = function() {
-  console.log(this.bitVector);
-};
-
 BloomFilter.prototype.add = function(str) {
   var indices = this.getIndices(str);
   this.setBitsOn(indices);
@@ -40,7 +36,6 @@ BloomFilter.prototype.check = function(str) {
 BloomFilter.prototype.getIndices = function(str) {
   var indices = [];
   for (i = 0; i < this.k; i++) {
-    console.log(this.hashFunctions);
     indices.push(this.hashFunctions[i](str, this.seed));
 
   }

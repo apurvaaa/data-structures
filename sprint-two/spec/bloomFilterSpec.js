@@ -18,7 +18,7 @@ describe('bloomFilter', function() {
     bloomFilter.add('world');
     expect(bloomFilter.check('hello')).to.equal(true);
     expect(bloomFilter.check('world')).to.equal(true);
-    console.log(bloomFilter.logBitVector());
+    
   });
 
   it('should add values into the bloomFilter with k > 3, m >18', function() {
@@ -28,6 +28,6 @@ describe('bloomFilter', function() {
     bloomFilter.add('world');
     expect(bloomFilter.check('hello')).to.equal(true);
     expect(bloomFilter.check('world')).to.equal(true);
-    console.log(bloomFilter.logBitVector());
+
   });
 });
