@@ -5,7 +5,7 @@ describe('graph', function() {
     graph = new Graph();
   });
 
-  it('should have methods named "addNode", "contains", "removeNode", "addEdge", "hasEdge", "removeEdge" and "forEachNode"', function() {
+  it('should have methods named "addNode", "contains", "removeNode", "addEdge", "hasEdge", "removeEdge", "isConnected" and "forEachNode"', function() {
     expect(graph.addNode).to.be.a('function');
     expect(graph.contains).to.be.a('function');
     expect(graph.removeNode).to.be.a('function');
@@ -13,6 +13,7 @@ describe('graph', function() {
     expect(graph.addEdge).to.be.a('function');
     expect(graph.removeEdge).to.be.a('function');
     expect(graph.forEachNode).to.be.a('function');
+    expect(graph.isConnected).to.be.a('function');
   });
 
   it('should store values as nodes that were inserted', function() {
@@ -67,5 +68,25 @@ describe('graph', function() {
     expect(graph.hasEdge(1, 5)).to.equal(true);
     expect(graph.hasEdge(3, 5)).to.equal(true);
     expect(graph.hasEdge(5, 5)).to.equal(true);
+  });
+
+  it('check if two nodes are connected', function() {
+    graph.addNode(5);
+    graph.addNode(2);
+    graph.addNode(1);
+    graph.addNode(3);
+    graph.addEdge(5, 1);
+    graph.addEdge(1, 3);
+    expect(graph.isConnected(5, 3)).to.be.equal(true);
+  });
+
+  it('check if two nodes are not connected', function() {
+    graph.addNode(5);
+    graph.addNode(2);
+    graph.addNode(1);
+    graph.addNode(3);
+    graph.addEdge(5, 1);
+    graph.addEdge(1, 3);
+    expect(graph.isConnected(5, 2)).to.be.equal(false);
   });
 });

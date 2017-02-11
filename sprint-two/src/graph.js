@@ -15,12 +15,7 @@ Graph.prototype.addNode = function(node) {
 
 // Return a boolean value indicating if the value passed to contains is represented in the graph.
 Graph.prototype.contains = function(node) {
-  for (var key in this.nodes) {
-    if (this.nodes[key].id === node) {
-      return true;
-    }
-  }
-  return false;
+  return this.nodes[node] !== undefined;
 };
 
 // Removes a node from the graph.
@@ -35,14 +30,14 @@ Graph.prototype.removeNode = function(node) {
 
 // Returns a boolean indicating whether two specified nodes are connected.  Pass in the values contained in each of the two nodes.
 Graph.prototype.hasEdge = function(fromNode, toNode) {
-  var hasNodes = this.hasNode(fromNode) && this.hasNode(toNode);
+  var hasNodes = this.contains(fromNode) && this.contains(toNode);
   return hasNodes ? (this.nodes[toNode].edges[fromNode] !== undefined &&
     this.nodes[fromNode].edges[toNode] !== undefined) : false;
 };
 
 // Connects two nodes in a graph by adding an edge between them.
 Graph.prototype.addEdge = function(fromNode, toNode) {
-  if (this.hasNode(fromNode) && this.hasNode(toNode)) {
+  if (this.contains(fromNode) && this.contains(toNode)) {
     this.nodes[fromNode].edges[toNode] = true;
     this.nodes[toNode].edges[fromNode] = true;
   }
@@ -61,9 +56,38 @@ Graph.prototype.forEachNode = function(cb) {
   }
 };
 
-Graph.prototype.hasNode = function(node) {
-  return this.nodes[node] !== undefined;
-};
+Graph.prototype.isConnected = function(fromNode, toNode) {
+
+  // push fromNode to toVisit queue
+  // loop : while toVisit has nodes in it and toNode hasnt been found
+      // pop from toVisit 
+          // check if it is toNode , return true
+          // if not - push to Visited
+      // for each nieghbours (found from edges of node )
+          // if not in visisted
+              // push to  toVisit
+  // loop ended - return false
+
+
+  var toVisit = [];
+  var visited = [];
+  toVisit.push(fromNode);
+
+  while (toVisit.length !== 0) {
+    var node = toVisit.shift();
+    if (node === toNode) {
+      return true;
+    }
+    visited.push(node);
+    for (var n in this.nodes[node].edges) {
+      if (!visited.includes(parseInt(n))) {
+        toVisit.push(parseInt(n));
+      }
+    }
+  }
+  return false;
+  
+}; 
 
 /*
  * Complexity: What is the time complexity of the above functions?
