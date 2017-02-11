@@ -58,17 +58,6 @@ Graph.prototype.forEachNode = function(cb) {
 
 Graph.prototype.isConnected = function(fromNode, toNode) {
 
-  // push fromNode to toVisit queue
-  // loop : while toVisit has nodes in it and toNode hasnt been found
-      // pop from toVisit 
-          // check if it is toNode , return true
-          // if not - push to Visited
-      // for each nieghbours (found from edges of node )
-          // if not in visisted
-              // push to  toVisit
-  // loop ended - return false
-
-
   var toVisit = [];
   var visited = [];
   toVisit.push(fromNode);
@@ -99,5 +88,6 @@ Graph.prototype.isConnected = function(fromNode, toNode) {
  addEdge: O(1)
  hasEdge: O(1)
  removeEdge: O(1)
- forEachNode: O(n) * complexity of callback function*/
+ forEachNode: O(n) * complexity of callback function
+ isConnected: O(n)*/
 

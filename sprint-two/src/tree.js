@@ -26,6 +26,29 @@ treeMethods.contains = function(target) {
     }
     return false;
   }
+
+
+};
+
+
+treeMethods.excommunicate = function(value) {
+  var excommunicated = false;
+  var newChildren = [];
+  for (var i = 0; i < this.children.length; i++) {
+    if (this.children[i].value !== value) {
+      newChildren.push(this.children[i]);
+    } else {
+      excommunicated = true;
+    }
+  }
+
+  if (excommunicated) {
+    this.children = newChildren;
+  } else {
+    for (var i = 0; i < this.children.length; i++) {
+      this.children[i].excommunicate(value);
+    }
+  }
 };
 
 
