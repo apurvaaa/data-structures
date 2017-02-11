@@ -94,13 +94,13 @@ var BSTmethods = {
     }
 
     // Case where node has two children
-    var minimalValue = currentNode.right.findMinimalValueInTree();
+    var minimalValue = currentNode.right._findMinimalValueInTree();
     currentNode.value = minimalValue;
     currentNode.right.remove(value);  // Removes minimal value in right subtree
   },
-  findMinimalValueInTree: function() {
+  _findMinimalValueInTree: function() {
     if (this.left !== null) {
-      return this.left.findMinimalValueInTree();
+      return this.left._findMinimalValueInTree();
     } else {
       return this.value;
     }

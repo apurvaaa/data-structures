@@ -26,10 +26,7 @@ treeMethods.contains = function(target) {
     }
     return false;
   }
-
-
 };
-
 
 treeMethods.excommunicate = function(value) {
   var excommunicated = false;
@@ -58,4 +55,5 @@ treeMethods.excommunicate = function(value) {
  */
 /*
  addChild: O(1);
- contains: O(n);*/
+ contains: O(n);
+ excommunicate: O(n)*/

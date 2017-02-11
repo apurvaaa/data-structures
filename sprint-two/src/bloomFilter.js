@@ -5,7 +5,7 @@ var BloomFilter = function(m, k) {
   this.m = m;  // max = 18
   this.k = k;  // k = 3 
   this.seed = 7919;
-  this.hashFunctions = [this.hash1.bind(this), this.hash2.bind(this), this.hash3.bind(this)];
+  this.hashFunctions = [this._hash1.bind(this), this._hash2.bind(this), this._hash3.bind(this)];
   var bv = this;
   if (k > 3) {
     for (i = 3; i < k; i++) {
@@ -24,16 +24,16 @@ BloomFilter.prototype.newHashFunction = function(i) {
 };
 
 BloomFilter.prototype.add = function(str) {
-  var indices = this.getIndices(str);
-  this.setBitsOn(indices);
+  var indices = this._getIndices(str);
+  this._setBitsOn(indices);
 };
 
 BloomFilter.prototype.check = function(str) {
-  var indices = this.getIndices(str);
-  return this.checkBits(indices);
+  var indices = this._getIndices(str);
+  return this._checkBits(indices);
 };
 
-BloomFilter.prototype.getIndices = function(str) {
+BloomFilter.prototype._getIndices = function(str) {
   var indices = [];
   for (i = 0; i < this.k; i++) {
     indices.push(this.hashFunctions[i](str, this.seed));
@@ -42,13 +42,13 @@ BloomFilter.prototype.getIndices = function(str) {
   return indices;
 };
 
-BloomFilter.prototype.setBitsOn = function(indices) {
+BloomFilter.prototype._setBitsOn = function(indices) {
   for (var i = 0; i < indices.length; i++) {
     this.bitVector[indices[i]] = 1;
   }
 };
 
-BloomFilter.prototype.checkBits = function(indices) {
+BloomFilter.prototype._checkBits = function(indices) {
   for (var i = 0; i < indices.length; i++) {
     if (this.bitVector[indices[i]] === 0) {
       return false;
@@ -57,7 +57,7 @@ BloomFilter.prototype.checkBits = function(indices) {
   return true;
 };
 
-BloomFilter.prototype.hash1 = function(str) {
+BloomFilter.prototype._hash1 = function(str) {
   var hash = 0;
 
   for (var i = 0; i < str.length; i++) {
@@ -69,7 +69,7 @@ BloomFilter.prototype.hash1 = function(str) {
 };
 
 
-BloomFilter.prototype.hash2 = function(str, seed) {
+BloomFilter.prototype._hash2 = function(str, seed) {
 
   var l = str.length;
   var h = seed ^ l;
@@ -108,7 +108,7 @@ BloomFilter.prototype.hash2 = function(str, seed) {
 
 };
 
-BloomFilter.prototype.hash3 = function(key, seed) {
+BloomFilter.prototype._hash3 = function(key, seed) {
 
   var remainder, bytes, h1, h1b, c1, c1b, c2, c2b, k1, i;
   

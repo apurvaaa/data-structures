@@ -8,9 +8,9 @@ describe('bloomFilter', function() {
   it('should have methods named "add", "check", "getIndices", "setBitsOn" and "checkBits"', function() {
     expect(bloomFilter.add).to.be.a('function');
     expect(bloomFilter.check).to.be.a('function');
-    expect(bloomFilter.getIndices).to.be.a('function');
-    expect(bloomFilter.setBitsOn).to.be.a('function');
-    expect(bloomFilter.checkBits).to.be.a('function');
+    expect(bloomFilter._getIndices).to.be.a('function');
+    expect(bloomFilter._setBitsOn).to.be.a('function');
+    expect(bloomFilter._checkBits).to.be.a('function');
   });
 
   it('should add values into the bloomFilter', function() {

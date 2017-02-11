@@ -20,7 +20,7 @@ var LimitedArray = function(limit) {
   var limitedArray = {};
 
   limitedArray.get = function(index, key) {
-    checkLimit(index);
+    _checkLimit(index);
     
     if (storage[index] === undefined) {
       return undefined;
@@ -33,7 +33,7 @@ var LimitedArray = function(limit) {
     }
   };
   limitedArray.set = function(index, key, value) {
-    checkLimit(index);
+    _checkLimit(index);
     // Remove node
     if (value === undefined) {
       if (storage[index] !== undefined && storage[index].contains(key)) {
@@ -57,10 +57,10 @@ var LimitedArray = function(limit) {
     }
   };
   limitedArray.increaseToDouble = function() {
-    limitedArray.rehash(limit * 2);
+    limitedArray._rehash(limit * 2);
   };
 
-  limitedArray.rehash = function(newLimit) {
+  limitedArray._rehash = function(newLimit) {
     var newStorage = [];
     for (var i = 0; i < storage.length; i++) {
       if (storage[i] !== undefined) {
@@ -86,14 +86,14 @@ var LimitedArray = function(limit) {
   };
 
   limitedArray.reduceToHalf = function() {
-    limitedArray.rehash(Math.floor(limit / 2));
+    limitedArray._rehash(Math.floor(limit / 2));
   };
 
   limitedArray.isAlmostFull = function() {
     return count >= (0.75 * limit);
   };
 
-  var checkLimit = function(index) {
+  var _checkLimit = function(index) {
     if (typeof index !== 'number') {
       throw new Error('setter requires a numeric index for its first argument');
     }
