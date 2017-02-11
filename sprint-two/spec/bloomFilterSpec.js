@@ -1,5 +1,5 @@
 describe('bloomFilter', function() {
-  var binarySearchTree;
+  var bloomFilter;
 
   beforeEach(function() {
     bloomFilter = new BloomFilter(18, 3);
