@@ -1,8 +1,30 @@
-var BloomFilter = function() {
+var BloomFilter = function(m, k) {
+  
   // m = 18, k = 3
-  this.bitVector = _.range(0, 18).map(function(item) { return 0; });
-  this.m = 18;
-  this.k = 3;
+  this.bitVector = _.range(0, m).map(function(item) { return 0; });
+  this.m = m;  // max = 18
+  this.k = k;  // k = 3 
+  this.seed = 7919;
+  this.hashFunctions = [this.hash1.bind(this), this.hash2.bind(this), this.hash3.bind(this)];
+  var bv = this;
+  if (k > 3) {
+    for (i = 3; i < k; i++) {
+      //hashi(x, m) = (hasha(x) + i × hashb(x)) mod m
+      this.hashFunctions.push(this.newHashFunction(i).bind(this));
+    }
+  }
+
+
+};
+
+BloomFilter.prototype.newHashFunction = function(i) {
+  return function(str) {
+    return (this.hashFunctions[0](str) + i * this.hashFunctions[1](str, this.seed)) % this.m;
+  };
+};
+
+BloomFilter.prototype.logBitVector = function() {
+  console.log(this.bitVector);
 };
 
 BloomFilter.prototype.add = function(str) {
@@ -17,9 +39,11 @@ BloomFilter.prototype.check = function(str) {
 
 BloomFilter.prototype.getIndices = function(str) {
   var indices = [];
-  indices.push(this.hash1(str));
-  indices.push(this.hash2(str, 7919));
-  indices.push(this.hash3(str, 7919));
+  for (i = 0; i < this.k; i++) {
+    console.log(this.hashFunctions);
+    indices.push(this.hashFunctions[i](str, this.seed));
+
+  }
   return indices;
 };
 
@@ -141,15 +165,4 @@ BloomFilter.prototype.hash3 = function(key, seed) {
 
   return (h1 >>> 0) % this.m;
 };
-
-
-var bloomFilter = new BloomFilter();
-bloomFilter.add('hello');
-bloomFilter.add('world');
-console.log(bloomFilter.check('no'));   // false
-console.log(bloomFilter.check('eddie')); 
-console.log(bloomFilter.check('shastry')); 
-console.log(bloomFilter.check('hackreactor')); // false
-console.log(bloomFilter.check('hello'));  // true
-
 
