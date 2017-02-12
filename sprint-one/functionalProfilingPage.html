@@ -1,0 +1,44 @@
+<!doctype html>
+<meta charset="utf8">
+<html>
+  <head>
+    
+  <!--  <script src="../lib/jquery/jquery.js"></script>
+    <script src="../lib/underscore/underscore.js"></script> -->
+    <script src="./src/functional/queue.js"></script>
+    <script src="./src/functional/stack.js"></script>
+    <script>
+      var stacks = [];
+      var numStacks = 100000;
+      var numPushes = 100000;
+      var numPops = 100000;
+      for (var i = 0; i < numStacks; i++) {
+        stacks[i] = Stack();
+      }
+      for (var i = 0; i < numPushes; i++ ) {
+        stacks[i].push(i);
+      }
+      for (var i = 0; i < numPops; i++ ) {
+        stacks[i].pop();
+      }
+
+
+      var queues = [];
+      var numQueues = 100000;
+      var numEnqueues = 100000;
+      var numDequeues = 100000;
+      for (var i = 0; i < numQueues; i++) {
+        queues[i] = Queue();
+      }
+      for (var i = 0; i < numEnqueues; i++ ) {
+        queues[i].enqueue(i);
+      }
+      for (var i = 0; i < numDequeues; i++ ) {
+        queues[i].dequeue();
+      }
+
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
